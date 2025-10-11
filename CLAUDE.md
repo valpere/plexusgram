@@ -4,14 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**plexusgram** - A demonstration Telegram bot built with Go and the gotgbot framework.
+**plexusgram** - A Multi-Language Knowledge Base Bot built with Go and the gotgbot framework.
 
 This is a portfolio project designed to showcase software engineering skills through progressive implementation phases:
-- Phase 1: Simple chatbot functionality
-- Phase 2: Game features
-- Phase 3: Utility functions and service integrations
+- Phase 1: Basic bot infrastructure and command handling
+- Phase 2: Knowledge base core (article storage, search, categories)
+- Phase 3: Advanced features (i18n, full-text search, RBAC, versioning, analytics)
 
-**Tech Stack**: Go 1.24.6, gotgbot framework
+**Business Value**: Corporate knowledge management, customer support automation
+
+**Tech Stack**: Go 1.24.6, gotgbot framework, PostgreSQL (planned), Elasticsearch (planned)
 
 ## Project Context
 
@@ -92,9 +94,16 @@ Following SOLID principles and Go best practices from global CLAUDE.md:
 - `internal/` - Internal application packages
   - `types.go` - Common types used across packages
   - `bot/` - Telegram bot core functionality
-  - `handlers/` - Command and message handlers
-  - `storage/` - Data persistence layer
-  - `services/` - Business logic and external integrations
+  - `handlers/` - Command and message handlers for bot interactions
+  - `storage/` - Data persistence layer (repository pattern)
+    - `models/` - Data models (Article, Category, User, etc.)
+    - `repository/` - Repository interfaces and implementations
+  - `services/` - Business logic layer
+    - `knowledge/` - Knowledge base operations (CRUD, search)
+    - `i18n/` - Internationalization support
+    - `auth/` - Authentication and authorization (RBAC)
+  - `search/` - Full-text search integration (Elasticsearch)
+  - `analytics/` - Usage tracking and metrics
 
 **Type Organization:**
 - Common types in `internal/types.go`
@@ -111,13 +120,43 @@ Following SOLID principles and Go best practices from global CLAUDE.md:
 1. This is a portfolio project with progressive complexity phases
 2. Each phase should be completable within approximately one week
 3. Start with local development, then progress to cloud deployment
-4. Focus on showcasing software engineering skills rather than building production-ready features
+4. Focus on showcasing software engineering skills for corporate knowledge management use cases
+
+## Implementation Priorities
+
+**Phase 2 Priorities (Knowledge Base Core):**
+1. Define data models (Article, Category, Tag)
+2. Implement repository pattern with PostgreSQL
+3. Add article CRUD commands (/add, /search, /view, /delete)
+4. Implement basic search functionality
+5. Add category/tag organization
+
+**Phase 3 Priorities (Advanced Features):**
+1. Multi-language content support (i18n)
+2. Elasticsearch integration for full-text search
+3. RBAC system (admin, editor, viewer roles)
+4. Content versioning and change tracking
+5. Usage analytics and reporting
 
 ## Environment Setup
 
 Required environment variables (create `.env` file):
 ```
+# Telegram Bot
 TELEGRAM_BOT_TOKEN=your_bot_token_here
+
+# Database (Phase 2+)
+DATABASE_URL=postgres://user:password@localhost:5432/plexusgram
+DATABASE_MAX_CONNECTIONS=25
+
+# Elasticsearch (Phase 3+)
+ELASTICSEARCH_URL=http://localhost:9200
+ELASTICSEARCH_INDEX=knowledge_base
+
+# Optional
+DEBUG=false
+LOG_LEVEL=info
 ```
 
 Note: `.env` is gitignored for security.
+- to memorize

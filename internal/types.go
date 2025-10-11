@@ -19,30 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package main
+package internal
 
-import (
-	"log"
-
-	"github.com/valpere/plexusgram/internal/bot"
-	"github.com/valpere/plexusgram/internal/config"
-)
-
-func main() {
-	// Load configuration
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatalf("Failed to load configuration: %v", err)
-	}
-
-	// Create bot instance
-	b, err := bot.New(cfg)
-	if err != nil {
-		log.Fatalf("Failed to create bot: %v", err)
-	}
-
-	// Start bot
-	if err := b.Start(); err != nil {
-		log.Fatalf("Bot error: %v", err)
-	}
+// Config holds the application configuration
+type Config struct {
+	BotToken string
+	Debug    bool
 }
