@@ -19,30 +19,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package main
+package config
 
 import (
-	"log"
+	"fmt"
+	"os"
 
-	"github.com/valpere/plexusgram/internal/bot"
-	"github.com/valpere/plexusgram/internal/config"
+	"github.com/joho/godotenv"
+	"github.com/valpere/plexusgram/internal"
 )
 
-func main() {
-	// Load configuration
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatalf("Failed to load configuration: %v", err)
+// Load reads configuration from environment variables
+// Automatically loads .env file if it exists
+func Load() (*internal.Config, error) {
+	// Load .env file if it exists (silently ignore if not found)
+	_ = godotenv.Load()
+
+	botToken := os.Getenv("TELEGRAM_BOT_TOKEN")
+	if botToken == "" {
+		return nil, fmt.Errorf("TELEGRAM_BOT_TOKEN environment variable is required")
 	}
 
-	// Create bot instance
-	b, err := bot.New(cfg)
-	if err != nil {
-		log.Fatalf("Failed to create bot: %v", err)
-	}
+	debug := os.Getenv("DEBUG") == "true"
 
-	// Start bot
-	if err := b.Start(); err != nil {
-		log.Fatalf("Bot error: %v", err)
-	}
+	return &internal.Config{
+		BotToken: botToken,
+		Debug:    debug,
+	}, nil
 }
