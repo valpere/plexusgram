@@ -21,8 +21,5 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/valpere/plexusgram/cmd"
-
 func main() {
-	cmd.Execute()
 }
